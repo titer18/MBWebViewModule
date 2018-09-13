@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MBWebViewController">
+            <connections>
+                <outlet property="view" destination="T0K-AH-smm" id="J8E-d0-xkr"/>
+                <outlet property="webView" destination="jCQ-ND-QK4" id="W1T-VM-Yn8"/>
+                <outlet property="webViewConstraintTop" destination="cNc-kD-LXz" id="i5y-8b-47K"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="T0K-AH-smm">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <webView opaque="NO" contentMode="scaleToFill" allowsInlineMediaPlayback="NO" mediaPlaybackRequiresUserAction="NO" mediaPlaybackAllowsAirPlay="NO" keyboardDisplayRequiresUserAction="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jCQ-ND-QK4">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <color key="backgroundColor" red="0.98039215690000003" green="0.98039215690000003" blue="1" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                    <dataDetectorType key="dataDetectorTypes"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="F8c-Bi-ssa"/>
+                    </connections>
+                </webView>
+            </subviews>
+            <color key="backgroundColor" red="0.98039215690000003" green="0.98039215690000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="jCQ-ND-QK4" firstAttribute="leading" secondItem="hPm-MN-pYK" secondAttribute="leading" id="DLE-Rx-psS"/>
+                <constraint firstItem="jCQ-ND-QK4" firstAttribute="trailing" secondItem="hPm-MN-pYK" secondAttribute="trailing" id="YLJ-HF-4dh"/>
+                <constraint firstItem="jCQ-ND-QK4" firstAttribute="bottom" secondItem="hPm-MN-pYK" secondAttribute="bottom" id="YOH-Sv-MZh"/>
+                <constraint firstItem="jCQ-ND-QK4" firstAttribute="top" secondItem="T0K-AH-smm" secondAttribute="top" id="cNc-kD-LXz"/>
+            </constraints>
+            <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+            <viewLayoutGuide key="safeArea" id="hPm-MN-pYK"/>
+            <point key="canvasLocation" x="364" y="262"/>
+        </view>
+    </objects>
+</document>

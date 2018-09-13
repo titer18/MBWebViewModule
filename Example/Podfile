@@ -1,0 +1,10 @@
+source 'https://github.com/CocoaPods/Specs.git'
+source 'https://github.com/titer18/MebSpecs'
+
+platform:ios, '10.0'
+
+target 'Example' do
+    #use_frameworks!
+    inhibit_all_warnings!
+    pod 'MBWebViewModule', :path => '../'
+end
