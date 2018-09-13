@@ -19,7 +19,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <SDWebImage/SDWebImagePrefetcher.h>
 //选择图片
-#import <HXPhotoPicker/HXPhotoPicker.h>
+#import <MBPhotoPicker/HXPhotoPicker.h>
 #import "UploadImageTool.h"
 //js交互
 #import <WebViewJavascriptBridge/WebViewJavascriptBridge.h>
