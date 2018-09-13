@@ -15,7 +15,6 @@ Pod::Spec.new do |s|
   s.dependency 'AFNetworking'
   s.dependency 'GCDObjC'
   s.dependency 'MJRefresh'
-  #s.dependency 'RACAFNetworking'
   s.dependency 'Masonry'
 
   #js交互
@@ -28,7 +27,7 @@ Pod::Spec.new do |s|
   s.dependency 'PromiseKit', '~> 1.7'
 
   #选照片
-  s.dependency 'HXPhotoPicker', '~> 2.2.0'
+  s.dependency 'MBPhotoPicker', '~> 2.2.1'
 
   #顶部信息提示
   s.dependency 'MBTips'
