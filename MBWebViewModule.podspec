@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'MBWebViewModule'
-  s.version          = '1.0.1'
+  s.version          = '1.0.2'
   s.summary          = '封装好的webView'
 
   #添加第三方依赖
@@ -53,6 +53,9 @@ Pod::Spec.new do |s|
   s.resources    = 'MBWebViewModule/Assets/**'
   s.resources    = 'MBWebViewModule/**/*.xib'
   s.public_header_files = 'MBWebViewModule/**/*.h'
+  s.xcconfig = {
+	'GCC_PREPROCESSOR_DEFINITIONS' => '$(inherited) MBWebView_DEV=1'
+  }
 
   s.subspec 'NavigatorModule' do |ss|
 

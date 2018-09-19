@@ -89,10 +89,10 @@
 
 + (PMKPromise *)MBWebUrlWithPageName:(NSString *)pageName parameters:(NSDictionary *)parameters
 {
-#if API_DEV == 1 //测试地址(外网能访问)
-    NSString *host = @"http://m2dev.meb.com";
-#else
+#if MBWebView_DEV == 0
     NSString *host = @"https://m2.meb.com";
+#else
+    NSString *host = @"http://m2dev.meb.com";  //测试地址(外网能访问)
 #endif
     
     PMKPromise *promise;

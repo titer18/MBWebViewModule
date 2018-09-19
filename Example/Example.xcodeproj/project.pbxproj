@@ -168,11 +168,9 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Example/Pods-Example-resources.sh",
-				"${PODS_ROOT}/HXPhotoPicker/照片选择器/HXPhotoPicker/HXPhotoPicker.bundle",
+				"${PODS_ROOT}/MBPhotoPicker/照片选择器/HXPhotoPicker/HXPhotoPicker.bundle",
 				"${PODS_ROOT}/../../MBWebViewModule/MBWebNavigationTitleTabView.xib",
 				"${PODS_ROOT}/../../MBWebViewModule/MBWebNavigationTitleView.xib",
 				"${PODS_ROOT}/../../MBWebViewModule/MBWebViewController.xib",
@@ -184,8 +182,6 @@
 				"${PODS_ROOT}/SelectProject/SelectProject/SelectProjectViewController.xib",
 			);
 			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/HXPhotoPicker.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MBWebNavigationTitleTabView.nib",
@@ -208,15 +204,11 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-Example-checkManifestLockResult.txt",
 			);
@@ -376,6 +368,34 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"$(inherited)",
+					"MBAPI_DEV=1",
+					"$(inherited)",
+					"PMK_CALAYER=1",
+					"$(inherited)",
+					"PMK_NSNOTIFICATIONCENTER=1",
+					"$(inherited)",
+					"PMK_NSURLCONNECTION=1",
+					"$(inherited)",
+					"PMK_PAUSE=1",
+					"$(inherited)",
+					"PMK_UIACTIONSHEET=1",
+					"$(inherited)",
+					"PMK_UIALERTVIEW=1",
+					"$(inherited)",
+					"PMK_UIVIEW=1",
+					"$(inherited)",
+					"PMK_UIVIEWCONTROLLER=1",
+					"$(inherited)",
+					"PMK_UNTIL=1",
+					"$(inherited)",
+					"PMK_WHEN=1",
+					"$(inherited)",
+					"SD_WEBP=1",
+				);
 				INFOPLIST_FILE = Example/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

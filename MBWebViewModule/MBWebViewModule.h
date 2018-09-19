@@ -9,6 +9,13 @@
 #import <Foundation/Foundation.h>
 #import <PromiseKit/PromiseKit.h>
 
+/**
+ 接口测试环境开关 (Builld Settings - Preprocessor Macros)
+ 
+ @param MBWebView_DEV=0 关闭, MBWebView_DEV=1 打开测试环境
+ @return 接口环境
+ */
+
 @interface MBWebViewModule : NSObject
 
 /**
