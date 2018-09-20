@@ -27,7 +27,7 @@ Pod::Spec.new do |s|
   s.dependency 'PromiseKit', '~> 1.7'
 
   #选照片
-  s.dependency 'HXPhotoPicker', '~> 2.2.1'
+  s.dependency 'MBPhotoPicker'
 
   #顶部信息提示
   s.dependency 'MBTips'
