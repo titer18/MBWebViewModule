@@ -278,6 +278,17 @@
         }
     }];
     
+    //打电话
+    [self.bridge registerHandler:@"tel" handler:^(id data, WVJBResponseCallback responseCallback) {
+        
+        NSString *tel = data[@"phoneNumber"];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:tel] options:@{} completionHandler:^(BOOL success) {
+            if (responseCallback) {
+                responseCallback(@{});
+            }
+        }];
+    }];
+    
     self.sonicContext.owner = (id)self;
 }
 
