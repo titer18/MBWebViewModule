@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'MBWebViewModule'
-  s.version          = '1.0.5'
+  s.version          = '1.0.6'
   s.summary          = '封装好的webView'
 
   #添加第三方依赖
