@@ -77,28 +77,11 @@
     {
         _url = url;
         
-        self.clickTime = @([[NSDate date]timeIntervalSince1970]*1000);
-
-        SonicSessionConfiguration *configuration = [SonicSessionConfiguration new];
-
-        if ([NSClassFromString(@"HZRequestHeaderModel") respondsToSelector:NSSelectorFromString(@"sharedInstance")])
-        {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-            
-            JSONModel *model = [NSClassFromString(@"HZRequestHeaderModel") performSelector:NSSelectorFromString(@"sharedInstance")];
-            
-#pragma clang diagnostic pop
-            
-            NSDictionary *headersDic = [model toDictionary];
-            configuration.customRequestHeaders = headersDic;
-        }
-
-        configuration.supportCacheControl = YES;
-        
+        //设置ua
         [self setupUserAgent];
         
-        [[SonicEngine sharedEngine] createSessionWithUrl:self.url.absoluteString withWebDelegate:self withConfiguration:configuration];
+        //设置秒开
+        [self setupSession];
         
         //登录成功刷新页面
         [NSNotificationCenter once:kNotificationUserLoginDone].then(^(id data){
@@ -108,6 +91,30 @@
         [QMUITips showLoading:@"加载中" inView:self.view];
     }
     return self;
+}
+
+- (void)setupSession
+{
+    self.clickTime = @([[NSDate date]timeIntervalSince1970]*1000);
+    
+    SonicSessionConfiguration *configuration = [SonicSessionConfiguration new];
+    
+    if ([NSClassFromString(@"MBRequestHeaderModel") respondsToSelector:NSSelectorFromString(@"sharedInstance")])
+    {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+        
+        JSONModel *model = [NSClassFromString(@"MBRequestHeaderModel") performSelector:NSSelectorFromString(@"sharedInstance")];
+        
+#pragma clang diagnostic pop
+        
+        NSDictionary *headersDic = [model toDictionary];
+        configuration.customRequestHeaders = headersDic;
+    }
+    
+    configuration.supportCacheControl = YES;
+    
+    [[SonicEngine sharedEngine] createSessionWithUrl:self.url.absoluteString withWebDelegate:self withConfiguration:configuration];
 }
 
 - (void)viewDidLoad {
@@ -133,7 +140,7 @@
     }
     
     //添加进度条
-//    self.webView.delegate = self.progressProxy;
+    //    self.webView.delegate = self.progressProxy;
     [self.view addSubview:self.progressView];
     
     //添加js交互
@@ -142,6 +149,24 @@
     [WebViewJavascriptBridge enableLogging];
 #endif
     //注册js调用方法
+    [self bridgeRegisterHandler];
+    
+    self.sonicContext.owner = (id)self;
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    
+    // 在横竖屏旋转时，viewDidLayoutSubviews 这个时机还无法获取到正确的 navigationItem 的 frame，所以直接隐藏掉
+    if (self.popupAtBarButtonItem.isShowing) {
+        [self.popupAtBarButtonItem hideWithAnimated:NO];
+    }
+}
+
+#pragma mark - bridge registerHandler
+
+- (void)bridgeRegisterHandler
+{
     [self.bridge registerHandler:@"navigation" handler:^(id data, WVJBResponseCallback responseCallback) {
         
         NSError *error;
@@ -191,7 +216,7 @@
     //预约
     [self.bridge registerHandler:@"reservation" handler:^(id data, WVJBResponseCallback responseCallback) {
         
-//        [NavigatorModule URLString:@"meb://reservation" query:data].then(nil);
+        //        [NavigatorModule URLString:@"meb://reservation" query:data].then(nil);
         [DCURLRouter pushURLString:@"meb://reservation" query:data animated:YES];
         if (responseCallback) {
             responseCallback(@{});
@@ -246,26 +271,26 @@
         
         SelectProjectViewController *vc = [[SelectProjectViewController alloc] init];
         [vc selectProjectAction:^(NSString *projectName, NSString *projectID) {
-
+            
             [self dismissViewControllerAnimated:YES completion:^{
                 if (responseCallback) {
                     responseCallback(@{@"name":projectName ?: @"", @"id":projectID ? : @""});
                 }
             }];
         }];
-
+        
         QMUINavigationController *nav = [[QMUINavigationController alloc] initWithRootViewController:vc];
         vc.title = @"选择项目";
         UIBarButtonItem *closeItem = [UIBarButtonItem qmui_closeItemWithTarget:vc action:@selector(goBack)];
         vc.navigationItem.leftBarButtonItem = closeItem;
         [self presentViewController:nav animated:YES completion:nil];
-//
-//        [[vc rac_signalForSelector:@selector(goBack)] subscribeNext:^(RACTuple * _Nullable x) {
-//
-//            if (responseCallback) {
-//                responseCallback(@{});
-//            }
-//        }];
+        //
+        //        [[vc rac_signalForSelector:@selector(goBack)] subscribeNext:^(RACTuple * _Nullable x) {
+        //
+        //            if (responseCallback) {
+        //                responseCallback(@{});
+        //            }
+        //        }];
     }];
     
     //返回上一页
@@ -288,17 +313,6 @@
             }
         }];
     }];
-    
-    self.sonicContext.owner = (id)self;
-}
-
-- (void)viewDidLayoutSubviews {
-    [super viewDidLayoutSubviews];
-    
-    // 在横竖屏旋转时，viewDidLayoutSubviews 这个时机还无法获取到正确的 navigationItem 的 frame，所以直接隐藏掉
-    if (self.popupAtBarButtonItem.isShowing) {
-        [self.popupAtBarButtonItem hideWithAnimated:NO];
-    }
 }
 
 #pragma mark - action
@@ -323,7 +337,7 @@
         if (self.webView.scrollView.mj_header) {
             [self.webView.scrollView.mj_header endRefreshing];
         }
-   }];
+    }];
     
     [self hideEmptyView];
 }
@@ -476,7 +490,7 @@
 
 /**
  设置一个按钮
-
+ 
  @param text 按钮的标题
  */
 - (void)setRightBarButtonItemWithText:(NSString *)text
@@ -629,19 +643,19 @@
 {
     //不需要x
     /*
-    if ([self.webView canGoBack])
-    {
-        UIBarButtonItem *backItem = [UIBarButtonItem qmui_backItemWithTarget:self action:@selector(goBack)];
-        
-        UIBarButtonItem *closeItem = [UIBarButtonItem qmui_closeItemWithTarget:self action:@selector(handleCloseButtonEvent:)];
-        
-        self.navigationItem.leftBarButtonItems = @[backItem, closeItem];
-    }
-    else
-    {
-        UIBarButtonItem *backItem = [UIBarButtonItem qmui_backItemWithTarget:self action:@selector(goBack)];
-        self.navigationItem.leftBarButtonItem = backItem;
-    }
+     if ([self.webView canGoBack])
+     {
+     UIBarButtonItem *backItem = [UIBarButtonItem qmui_backItemWithTarget:self action:@selector(goBack)];
+     
+     UIBarButtonItem *closeItem = [UIBarButtonItem qmui_closeItemWithTarget:self action:@selector(handleCloseButtonEvent:)];
+     
+     self.navigationItem.leftBarButtonItems = @[backItem, closeItem];
+     }
+     else
+     {
+     UIBarButtonItem *backItem = [UIBarButtonItem qmui_backItemWithTarget:self action:@selector(goBack)];
+     self.navigationItem.leftBarButtonItem = backItem;
+     }
      */
 }
 
@@ -734,7 +748,7 @@
     
     //关闭滚动隐藏导航栏
     self.navigationController.hidesBarsOnSwipe = NO;
-
+    
     //--默认配置--
     
     if (self.configModel.mode.integerValue == 1)
@@ -742,7 +756,7 @@
         if (self.configModel.opaqueHeight.integerValue <= 0) {
             self.configModel.opaqueHeight = @(200);
         }
-
+        
         [self addScrollTransparentHeight:self.configModel.opaqueHeight.floatValue];
     }
     else if (self.configModel.mode.integerValue == 2)
@@ -878,16 +892,16 @@
             [UploadImageTool uploadImages:imageList
                                      safe:NO
                                  progress:nil
-             success:^(NSArray *urlArr) {
-                 [QMUITips hideAllTipsInView:weakSelf.view];
-                 resolve(urlArr);
-             }
-             failure:^{
-                 [QMUITips hideAllTipsInView:weakSelf.view];
-                 NSError *error = [NSError errorWithDomain:NSStringFromClass(self.class) code:200 userInfo:@{NSLocalizedDescriptionKey:@"图片上传失败"}];
-                 resolve(error);
-             }];
-
+                                  success:^(NSArray *urlArr) {
+                                      [QMUITips hideAllTipsInView:weakSelf.view];
+                                      resolve(urlArr);
+                                  }
+                                  failure:^{
+                                      [QMUITips hideAllTipsInView:weakSelf.view];
+                                      NSError *error = [NSError errorWithDomain:NSStringFromClass(self.class) code:200 userInfo:@{NSLocalizedDescriptionKey:@"图片上传失败"}];
+                                      resolve(error);
+                                  }];
+            
         } cancel:^(HXAlbumListViewController *viewController) {
             [QMUITips hideAllTipsInView:weakSelf.view];
             NSError *error = [NSError errorWithDomain:NSStringFromClass(self.class) code:200 userInfo:@{NSLocalizedDescriptionKey:@"用户取消了照片选择"}];
@@ -915,7 +929,7 @@
         _manager.configuration.saveSystemAblum = YES;
         _manager.configuration.navigationBar = ^(UINavigationBar *navigationBar) {
         };
-        _manager.configuration.requestImageAfterFinishingSelection = YES;    
+        _manager.configuration.requestImageAfterFinishingSelection = YES;
         _manager.configuration.videoCanEdit = NO;
         //照片是否可以编辑   default YES
         _manager.configuration.photoCanEdit = NO;
@@ -1031,7 +1045,7 @@
         [self.navigationController pushViewController:vc animated:YES];
         return NO;
     }
-
+    
     return YES;
 }
 
@@ -1043,14 +1057,14 @@
     [self hideEmptyView];
     
     //获取 404, 500等错误码
-//    NSURLSessionDataTask * dataTask = [[NSURLSession sharedSession] dataTaskWithRequest:webView.request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-//        NSHTTPURLResponse *tmpresponse = (NSHTTPURLResponse*)response;
-//
-//        if (tmpresponse.statusCode != 200) {
-//            [self webView:webView errorWithErrorCode:tmpresponse.statusCode];
-//        }
-//    }];
-//    [dataTask resume];
+    //    NSURLSessionDataTask * dataTask = [[NSURLSession sharedSession] dataTaskWithRequest:webView.request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+    //        NSHTTPURLResponse *tmpresponse = (NSHTTPURLResponse*)response;
+    //
+    //        if (tmpresponse.statusCode != 200) {
+    //            [self webView:webView errorWithErrorCode:tmpresponse.statusCode];
+    //        }
+    //    }];
+    //    [dataTask resume];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
@@ -1202,7 +1216,7 @@
 
 /**
  设置cookie
-
+ 
  @param url HTTPCookieOriginURL
  */
 //- (void)setupCookieWithUrl:(NSString *)url
@@ -1295,6 +1309,7 @@
 
 - (void)dealloc
 {
+    //todo: dealloc 不会被调用, 不知道为什么
     self.webView.delegate = nil;
     [self.webView stopLoading];
     self.sonicContext.owner = nil;
@@ -1304,21 +1319,26 @@
 
 - (void)willPopInNavigationControllerWithAnimated:(BOOL)animated
 {
+    self.bridge = nil;
+    [[SonicEngine sharedEngine] removeSessionWithWebDelegate:self];
 }
 
 - (void)navigationController:(nonnull QMUINavigationController *)navigationController poppingByInteractiveGestureRecognizer:(nullable UIScreenEdgePanGestureRecognizer *)gestureRecognizer viewControllerWillDisappear:(nullable UIViewController *)viewControllerWillDisappear viewControllerWillAppear:(nullable UIViewController *)viewControllerWillAppear
 {
     UIGestureRecognizerState state = gestureRecognizer.state;
-
+    
     if (state == UIGestureRecognizerStateEnded)
     {
-        if (CGRectGetMinX(navigationController.topViewController.view.superview.frame) >= 0)
+        //左滑返回, 取消了手势
+        if (CGRectGetMinX(navigationController.topViewController.view.superview.frame) < 0)
         {
-            self.bridge = nil;
-            
-            [[SonicEngine sharedEngine] removeSessionWithWebDelegate:self];
+            //恢复 bridge
+            [self bridgeRegisterHandler];
+            //恢复 Session
+            [self setupSession];
         }
     }
 }
 
 @end
+

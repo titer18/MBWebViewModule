@@ -14,13 +14,13 @@
 
 @implementation NavigatorModule
 
-+ (void)load {
-    
-    [NSNotificationCenter once:UIApplicationDidFinishLaunchingNotification].then(^(NSNotification *note, NSDictionary *userInfo){
-        
-        [DCURLRouter loadConfigDictFromPlist:@"NavigatorModule.plist"];
-    });
-}
+//+ (void)load {
+//
+//    [NSNotificationCenter once:UIApplicationDidFinishLaunchingNotification].then(^(NSNotification *note, NSDictionary *userInfo){
+//
+//        [DCURLRouter loadConfigDictFromPlist:@"NavigatorModule.plist"];
+//    });
+//}
 
 + (PMKPromise *)URLString:(NSString *)URLString
 {

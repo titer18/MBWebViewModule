@@ -53,12 +53,12 @@
     if(![[request allHTTPHeaderFields] objectForKey:@"mebAppName"] && [request isKindOfClass:[NSMutableURLRequest class]])
     {
         // set the new headers
-        if ([NSClassFromString(@"HZRequestHeaderModel") respondsToSelector:NSSelectorFromString(@"sharedInstance")])
+        if ([NSClassFromString(@"MBRequestHeaderModel") respondsToSelector:NSSelectorFromString(@"sharedInstance")])
         {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
             
-            JSONModel *model = [NSClassFromString(@"HZRequestHeaderModel") performSelector:NSSelectorFromString(@"sharedInstance")];
+            JSONModel *model = [NSClassFromString(@"MBRequestHeaderModel") performSelector:NSSelectorFromString(@"sharedInstance")];
             
 #pragma clang diagnostic pop
 
